@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
   fetchAllCats() {
-    return axios.get(`url`)
+    return axios.get(`https://data.latelier.co/cats.json`)
   },
 
 }

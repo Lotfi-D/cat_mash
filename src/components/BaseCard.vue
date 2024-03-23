@@ -1,11 +1,15 @@
 <template>
-  <el-card class="cat-container bg-white p-6 rounded-lg shadow-lg flex flex-col items-center" style="max-width: 480px">
-    <img
-      src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-      style="width: 100%"
-    />
+  <el-card class="cat-container bg-white p-6 rounded-lg shadow-lg flex flex-col items-center" style="width: 480px;">
+    <img :src="data.url"
+      style="width: 400px; height: 400px; 
+      object-fit: cover;"
+    >
     <template #footer>
-      <el-button class="w-[100%]" :class="classCat" @click="voteForCat(catNumber)">
+      <el-button 
+        class="w-[100%]"
+        :class="classCat"
+        @click="voteForCat(catNumber)"
+      >
         Votez
       </el-button>
     </template>
@@ -18,8 +22,12 @@ import { ElCard, ElButton } from 'element-plus'
 
 const props = defineProps({
   catNumber: {
-    default: 1,
     type: Number,
+    default: 1,
+  },
+  data: {
+    type: Object,
+    default: () => ({}),
   }
 })
 
