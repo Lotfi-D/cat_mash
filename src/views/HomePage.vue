@@ -2,8 +2,8 @@
   <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-pink-500">
     <h1 class="mb-8 text-4xl font-bold text-white">Lequel de ces chats est le plus mignon ?</h1>
     <div class="flex justify-around w-full px-4">
-      <BaseCard v-loading="cardIsLoading" :cat-number="1" :data="firstCatData" />
-      <BaseCard v-loading="cardIsLoading" :cat-number="2" :data="secondCatData" />
+      <BaseCard v-loading="cardIsLoading" :cat-number="1" :data="firstCatData" @voted="getCatsCardData" />
+      <BaseCard v-loading="cardIsLoading" :cat-number="2" :data="secondCatData" @voted="getCatsCardData" />
     </div>
   </div>
 </template>
@@ -17,11 +17,10 @@ import { storeToRefs } from 'pinia'
 
 const store = useCatsStore()
 const { listCats } = storeToRefs(store)
-const { addAllCats } = store //incrementScore,
+const { addAllCats } = store
 
 const firstCatData = ref({})
 const secondCatData = ref({})
-const pageIsLoading = ref(false)
 const cardIsLoading = ref(false)
 
 onMounted(async () => {
@@ -30,17 +29,11 @@ onMounted(async () => {
 })
 
 const getAllCats = async () => {
-  pageIsLoading.value = true
-  cardIsLoading.value = true
   try {
     const { data } = await catServices.fetchAllCats()
     addAllCats(data.images)
   } catch (error) {
     console.log(error)
-  } finally {
-    setTimeout(() => {
-      pageIsLoading.value = false
-    }, 300)
   }
 }
 
@@ -54,14 +47,18 @@ const getFirstCatData = () => {
 const getSecondCatData = () => {
   const randomNumber = getRandomNumber()
   secondCatData.value = listCats.value[randomNumber]
+
   if (secondCatData.value.id === firstCatData.value.id) {
     getSecondCatData()
   }
 }
 
-const getCatsCardData = async () => {
+const getCatsCardData = () => {
+  cardIsLoading.value = true
+
   getFirstCatData()
   getSecondCatData()
+  
   setTimeout(() => {
     cardIsLoading.value = false
   }, 800)

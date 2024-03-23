@@ -5,10 +5,46 @@ export const useCatsStore = defineStore('cats', () => {
   const cats = ref([])
   const scores = ref([])
   
-  const listCats = computed(() => cats.value)
+  const listCats = computed(() => {
+    const scoresId = scores.value.map((score) => score.id)
+
+    const catsWithScores = cats.value.map((cat) => {
+      let score = 0
+      if (scoresId.includes(cat.id)) {
+        const index = scores.value.findIndex(score => score.id === cat.id)
+        score = scores.value[index].score
+      }
+      return {
+        id: cat.id,
+        url: cat.url,
+        score,
+      }
+    })
+
+    return catsWithScores
+  })
+
+  const totalScore = computed(() => {
+    let sumScore = 0
+    scores.value.forEach(score => {
+      sumScore += score.score 
+    });
+
+    return sumScore
+  })
 
   const incrementScore = (cat) => {
-    scores.value.push(cat)
+    const scoresId = scores.value.map((score) => score.id)
+
+    if (scoresId.includes(cat.id)) {
+      const index = scores.value.findIndex(score => score.id === cat.id)
+      scores.value[index].score++
+    } else {
+      scores.value.push({
+        id: cat.id,
+        score: 1,
+      })
+    }
   }
 
   const addAllCats = (listCats) => {
@@ -17,7 +53,9 @@ export const useCatsStore = defineStore('cats', () => {
 
   return { 
     cats, 
+    scores,
     listCats,
+    totalScore,
     incrementScore,
     addAllCats,
   }

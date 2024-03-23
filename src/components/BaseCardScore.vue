@@ -3,28 +3,29 @@
     <template #header>
       Yummy hamburger
       <ElProgress
-        :percentage="10" 
+        :percentage="getScoreInPercentage" 
         :color="colors"
         :width="60"
         type="circle"
       />
     </template>
     <div>
-      <img :src="data.url" style="width:100%; height: 300px"/>
+      <img :src="data.url" style="width:100%; height: 300px" />
     </div>
   </el-card>
 </template>
 
 
 <script setup>
-import { defineProps, onMounted, ref } from 'vue'
+import { defineProps, ref, computed } from 'vue'
 import { ElCard, ElProgress } from 'element-plus'
+import { useCatsStore } from '@/stores/cats'
+import { storeToRefs } from 'pinia'
+
+const store = useCatsStore()
+const { totalScore } = storeToRefs(store)
 
 const props = defineProps({
-  catNumber: {
-    type: Number,
-    default: 1,
-  },
   data: {
     type: Object,
     default: () => ({}),
@@ -38,9 +39,10 @@ const colors = ref([
   { color: '#5cb87a', percentage: 100 }, //green under 100
 ])
 
-onMounted(() => {
-  console.log(props)
-})
+const getScoreInPercentage = computed(() => {
+  const percentage = (props.data.score / totalScore.value) * 100
+  return percentage.toFixed(2);
+}) 
 </script>
 
 <style>
@@ -59,6 +61,10 @@ onMounted(() => {
 .second-cat {
   background-color: #ec4899 !important;
   color: white !important;
+}
+
+.el-progress__text {
+  font-size: 16px !important;
 }
 </style>
 

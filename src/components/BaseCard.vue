@@ -4,11 +4,12 @@
       style="width: 400px; height: 400px; 
       object-fit: cover;"
     >
+    <!-- mettre texte en white et bg  -->
     <template #footer>
       <el-button 
         class="w-[100%]"
         :class="classCat"
-        @click="voteForCat(catNumber)"
+        @click="voteForCat(data)"
       >
         Votez
       </el-button>
@@ -17,8 +18,12 @@
 </template>
 
 <script setup>
-import { defineProps, onMounted, computed } from 'vue'
+import { defineProps, defineEmits, computed } from 'vue'
 import { ElCard, ElButton } from 'element-plus'
+import { useCatsStore } from '@/stores/cats'
+
+const store = useCatsStore()
+const { incrementScore } = store
 
 const props = defineProps({
   catNumber: {
@@ -31,14 +36,13 @@ const props = defineProps({
   },
 })
 
-onMounted(() => {
-  console.log(props)
-})
+const emits = defineEmits(['voted'])
 
 const classCat = computed(() => props.catNumber === 1 ? 'first-cat' : 'second-cat')
 
-const voteForCat = (catId) => {
-  console.log(`Voté pour le chat ${catId}`);
+const voteForCat = (cat) => {
+  incrementScore(cat)
+  emits('voted')
 }
 </script>
 
