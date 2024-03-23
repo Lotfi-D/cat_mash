@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="pageIsLoading" class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-pink-500">
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-pink-500">
     <h1 class="mb-8 text-4xl font-bold text-white">Lequel de ces chats est le plus mignon ?</h1>
     <div class="flex justify-around w-full px-4">
       <BaseCard v-loading="cardIsLoading" :cat-number="1" :data="firstCatData" />
@@ -31,6 +31,7 @@ onMounted(async () => {
 
 const getAllCats = async () => {
   pageIsLoading.value = true
+  cardIsLoading.value = true
   try {
     const { data } = await catServices.fetchAllCats()
     addAllCats(data.images)
@@ -59,7 +60,6 @@ const getSecondCatData = () => {
 }
 
 const getCatsCardData = async () => {
-  cardIsLoading.value = true
   getFirstCatData()
   getSecondCatData()
   setTimeout(() => {

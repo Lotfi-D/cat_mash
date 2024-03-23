@@ -28,7 +28,7 @@ const props = defineProps({
   data: {
     type: Object,
     default: () => ({}),
-  }
+  },
 })
 
 onMounted(() => {
