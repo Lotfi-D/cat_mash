@@ -1,48 +1,27 @@
 <template>
   <el-card style="width: 320px">
     <template #header>
-      Yummy hamburger
-      <ElProgress
-        :percentage="getScoreInPercentage" 
-        :color="colors"
-        :width="60"
-        type="circle"
-      />
+      <div class="flex justify-center">
+        <span class="font-bold mr-1">Score:</span> {{ data.score }}
+      </div>
     </template>
     <div>
-      <img :src="data.url" style="width:100%; height: 300px" />
+      <img :src="data.url" class="w-[100%] h-[300px]" />
     </div>
   </el-card>
 </template>
 
 
 <script setup>
-import { defineProps, ref, computed } from 'vue'
-import { ElCard, ElProgress } from 'element-plus'
-import { useCatsStore } from '@/stores/cats'
-import { storeToRefs } from 'pinia'
+import { defineProps } from 'vue'
+import { ElCard } from 'element-plus'
 
-const store = useCatsStore()
-const { totalScore } = storeToRefs(store)
-
-const props = defineProps({
+defineProps({
   data: {
     type: Object,
     default: () => ({}),
   },
 })
-
-const colors = ref([
-  { color: '#f56c6c', percentage: 50 }, //red under 20
-  { color: '#e6a23c', percentage: 65 }, //orange under 65
-  { color: '#f0e68c', percentage: 80 }, //yellow under 80
-  { color: '#5cb87a', percentage: 100 }, //green under 100
-])
-
-const getScoreInPercentage = computed(() => {
-  const percentage = (props.data.score / totalScore.value) * 100
-  return percentage.toFixed(2);
-}) 
 </script>
 
 <style>

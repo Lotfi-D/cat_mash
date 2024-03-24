@@ -1,13 +1,12 @@
 <template>
-  <el-card class="cat-container bg-white p-6 rounded-lg shadow-lg flex flex-col items-center" style="width: 480px;">
-    <img :src="data.url"
-      style="width: 400px; height: 400px; 
-      object-fit: cover;"
+  <el-card class="cat-container bg-white p-6 rounded-lg shadow-lg flex flex-col items-center w-[480px]">
+    <img 
+      :src="data.url"
+      class="w-[400px] h-[400px]"
     >
-    <!-- mettre texte en white et bg  -->
     <template #footer>
       <el-button 
-        class="w-[100%]"
+        class="w-[100%] "
         :class="classCat"
         @click="voteForCat(data)"
       >
@@ -30,6 +29,7 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  
   data: {
     type: Object,
     default: () => ({}),

@@ -24,15 +24,6 @@ export const useCatsStore = defineStore('cats', () => {
     return catsWithScores
   })
 
-  const totalScore = computed(() => {
-    let sumScore = 0
-    scores.value.forEach(score => {
-      sumScore += score.score 
-    });
-
-    return sumScore
-  })
-
   const incrementScore = (cat) => {
     const scoresId = scores.value.map((score) => score.id)
 
@@ -55,7 +46,6 @@ export const useCatsStore = defineStore('cats', () => {
     cats, 
     scores,
     listCats,
-    totalScore,
     incrementScore,
     addAllCats,
   }
